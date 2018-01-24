@@ -26,7 +26,7 @@ class WeatherController extends Controller
         $current_weather = $lowm->getCurrentWeather($request->city);
 
 
-        return view('data')->with(['current_weather' => $current_weather]);
+        return view('weather.data')->with(['current_weather' => $current_weather]);
     }
 
     /**
@@ -36,7 +36,7 @@ class WeatherController extends Controller
      */
     public function create()
     {
-        return view('weather');
+        return view('weather.weather');
     }
 
     /**

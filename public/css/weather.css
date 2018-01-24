@@ -1,0 +1,19 @@
+body {
+    background: url(http://www.vmagroup.com/wp-content/uploads/2015/12/blue_sky_green_grasswide.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    padding-top: 15%;
+    font-weight: bold;
+    font-size: 20px;
+}
+#tabs{
+    padding: 10px;
+    margin-top: 25px;
+}
+
+.ui-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: .2em .2em 0;
+    background: #6cbcfb;
+}
