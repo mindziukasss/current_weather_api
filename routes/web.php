@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+
+Route::get('/', ['as' => 'weather.form.create', 'uses' => 'WeatherController@create']);
+Route::post('/current_weather', ['as' => 'weather.index','uses' => 'WeatherController@index']);
