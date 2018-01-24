@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Gmopx\LaravelOWM\LaravelOWMServiceProvider::class,
 
         /*
          * Application Service Providers...
