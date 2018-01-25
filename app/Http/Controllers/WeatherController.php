@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Gmopx\LaravelOWM\LaravelOWM;
 use Illuminate\Http\Request;
 
+
 class WeatherController extends Controller
 {
     /**
@@ -18,20 +19,26 @@ class WeatherController extends Controller
         $city = $request->city;
         $api_key = $request->lowm;
 
-        if((!empty($t = file_get_contents('https://www.delfi.lt/'))) &&
-            !empty(json_decode($t)))
+        $del = 'https://www.delfi.lt/';
+        $wunderground = 'http://api.wunderground.com/api/';
+        $qwtm = 'http://api.openweathermap.org/data/2.5/weather?q=';
+
+        if((!empty($t = file_get_contents($del))) &&
+            !empty(json_decode($t) && (strlen($api_key) === 10 )))
         {
-            $current_weather = file_get_contents('https://www.delfi.lt/');
+            $current_weather = file_get_contents($del);
         }
-        elseif((!empty($t = file_get_contents('http://www.meteo.lt/lt/miestas?placeCode='.$city))) &&
-            !empty(json_decode($t)))
+        elseif((!empty($t = file_get_contents($wunderground.$api_key.'/conditions/q/CA/'.$city.'.json'))) &&
+            !empty(json_decode($t)) && (strlen($api_key) === 16 ))
         {
-            $current_weather = file_get_contents('http://www.meteo.lt/lt/miestas?placeCode='.$city);
+            $current_weather = file_get_contents($wunderground.$api_key.'/conditions/q/CA/'.$city.'.json');
+            $from = "https://www.wunderground.com";
         }
-        elseif((!empty($t = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$city.'&appid='.$api_key))) &&
-            !empty(json_decode($t)))
+        elseif((!empty($t = file_get_contents($qwtm .$city.'&appid='.$api_key))) &&
+            !empty(json_decode($t)) && (strlen($api_key) === 32 ))
         {
-            $current_weather = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$city.'&appid='.$api_key);
+            $current_weather = file_get_contents($qwtm.$city.'&appid='.$api_key);
+            $from = "https://openweathermap.org";
         }
 
         else
@@ -42,7 +49,7 @@ class WeatherController extends Controller
         $current_weather = json_decode($current_weather);
 
 
-        return view('weather.data')->with(['current_weather' => $current_weather]);
+        return view('weather.data')->with(['current_weather' => $current_weather,'from' => $from]);
     }
 
     /**
