@@ -15,15 +15,31 @@ class WeatherController extends Controller
     public function index(Request $request)
     {
 
+        $city = $request->city;
         $api_key = $request->lowm;
-        /**
-         * You has change class LaravelOWM protected $api_key;
-         * to public $api_key;
-         *
-         */
-        $lowm = new LaravelOWM();
-        $lowm->api_key = $api_key;
-        $current_weather = $lowm->getCurrentWeather($request->city);
+
+        if((!empty($t = file_get_contents('https://www.delfi.lt/'))) &&
+            !empty(json_decode($t)))
+        {
+            $current_weather = file_get_contents('https://www.delfi.lt/');
+        }
+        elseif((!empty($t = file_get_contents('http://www.meteo.lt/lt/miestas?placeCode='.$city))) &&
+            !empty(json_decode($t)))
+        {
+            $current_weather = file_get_contents('http://www.meteo.lt/lt/miestas?placeCode='.$city);
+        }
+        elseif((!empty($t = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$city.'&appid='.$api_key))) &&
+            !empty(json_decode($t)))
+        {
+            $current_weather = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$city.'&appid='.$api_key);
+        }
+
+        else
+        {
+            $current_weather = null;
+        }
+
+        $current_weather = json_decode($current_weather);
 
 
         return view('weather.data')->with(['current_weather' => $current_weather]);
