@@ -38,11 +38,21 @@ $(document).ready(function() {
 
     function appendData(data) {
         var num_tabs = $("div#tabs ul li").length + 1;
+        $('#del').click(function () {
+                alert("Delete");
+            });
 
         $("div#tabs ul").append(
-            "<li><a href='#tab" + num_tabs + "'>" + $('#city').val() + "</a></li>"
+            "<li><a href='#tab" + num_tabs + "'>" + $('#city').val() + "</a><span class='ui-icon ui-icon-close'></span></li>"
 
         );
+
+        tabs.on( "click", "span.ui-icon-close", function() {
+            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+            $( "#" + panelId).remove();
+            tabs.tabs( "refresh" );
+        });
+
         $("div#tabs").append(
             "<div id='tab" + num_tabs + "'>" + data + "</div>"
 
@@ -51,9 +61,12 @@ $(document).ready(function() {
 
 
 
+
     }
     $('.ui-icon').click(function () {
         tabs.hide("refresh");
     });
+
+
 
 });
